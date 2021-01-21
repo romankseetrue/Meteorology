@@ -9,11 +9,177 @@
 \begin{document}
 
 	\maketitle
-
-	\section{Introduction}
-
-	\section{Docker Containers and the Docker Engine}
 	
-	\section{Docker Images in Depth}
+Docker is an open platform for developing, shipping, and running applications. Docker enables you to separate your applications from your infrastructure so you can deliver software quickly.
+
+	\section{The Docker platform}
+
+Docker provides the ability to package and run an application in a loosely isolated environment called a container. The isolation and security allow you to run many containers simultaneously on a given host. Containers are lightweight because they don’t need the extra load of a hypervisor, but run directly within the host machine’s kernel.
+
+Docker provides tooling and a platform to manage the lifecycle of your containers:
+
+\begin{itemize}
+  \item Develop your application and its supporting components using containers.
+  \item The container becomes the unit for distributing and testing your application.
+  \item When you’re ready, deploy your application into your production environment, as a container or an orchestrated service. This works the same whether your production environment is a local data center, a cloud provider, or a hybrid of the two.
+\end{itemize}
+
+	\section{Docker Engine}
+
+Docker Engine is a client-server application with these major components:
+
+\begin{itemize}
+  \item A server which is a type of long-running program called a daemon process (the \texttt{dockerd} command).
+  \item A REST API which specifies interfaces that programs can use to talk to the daemon and instruct it what to do.
+  \item A command line interface (CLI) client (the \texttt{docker} command).
+\end{itemize}
+
+The CLI uses the Docker REST API to control or interact with the Docker daemon through scripting or direct CLI commands.
+
+	\section{Docker architecture}
+
+Docker uses a client-server architecture. The Docker client talks to the Docker daemon, which does the heavy lifting of building, running, and distributing your Docker containers. The Docker client and daemon can run on the same system, or you can connect a Docker client to a remote Docker daemon. The Docker client and daemon communicate using a REST API, over UNIX sockets or a network interface.
+
+\textbf{The Docker daemon} (\texttt{dockerd}) listens for Docker API requests and manages Docker objects such as images, containers, networks, and volumes. A daemon can also communicate with other daemons to manage Docker services.
+
+\textbf{The Docker client} (\texttt{docker}) is the primary way that many Docker users interact with Docker. When you use commands such as \texttt{docker run}, the client sends these commands to \texttt{dockerd}, which carries them out. The \texttt{docker} command uses the Docker API. The Docker client can communicate with more than one daemon.
+
+\textbf{A Docker registry} stores Docker images. Docker Hub is a public registry that anyone can use, and Docker is configured to look for images on Docker Hub by default. You can even run your own private registry.
+
+When you use the \texttt{docker pull} or \texttt{docker run} commands, the required images are pulled from your configured registry. When you use the \texttt{docker push} command, your image is pushed to your configured registry.
+
+	\section{Docker objects}
+
+When you use Docker, you are creating and using images, containers, networks, volumes, plugins, and other objects. This section is a brief overview of some of those objects.
+
+	\subsection{Images}
+
+An image is a read-only template with instructions for creating a Docker container. Often, an image is based on another image, with some additional customization.
+
+\textbf{Search for an image on Docker Hub}
+
+\begin{itemize}
+  \item \textit{Usage:} \texttt{docker search <image>}
+  \item \textit{Example:} \texttt{docker search ubuntu}
+\end{itemize}
+
+\textbf{Build an image}
+
+\begin{itemize}
+  \item \textit{Usage:} \texttt{docker build <path>}
+  \item \textit{Example (also tags and names the build):} \texttt{docker build . -t org/serve:0.0.0}
+\end{itemize}
+
+\textbf{List images}
+
+\begin{itemize}
+  \item \texttt{docker image ls}
+\end{itemize}
+
+\textbf{Remove an image}
+
+\begin{itemize}
+  \item \textit{Usage:} \texttt{docker image rmi <image id>}
+  \item \textit{Example (only uses first 3 characters of image ID):} \texttt{docker rmi 70b}
+\end{itemize}
+
+You might create your own images or you might only use those created by others and published in a registry. To build your own image, you create a \textit{Dockerfile} with a simple syntax for defining the steps needed to create the image and run it. Each instruction in a \textit{Dockerfile} creates a layer in the image. When you change the \textit{Dockerfile} and rebuild the image, only those layers which have changed are rebuilt. This is part of what makes images so lightweight, small, and fast, when compared to other virtualization technologies.
+
+\textbf{Specify a base image}
+
+\begin{itemize}
+  \item \textit{Usage:} \texttt{FROM <base image>}
+  \item \textit{Example:} \texttt{FROM node:latest}
+\end{itemize}
+
+\textbf{Set a working directory for the container}
+
+\begin{itemize}
+  \item \textit{Usage:} \texttt{WORKDIR <dir>}
+  \item \textit{Example:} \texttt{WORKDIR /usr/src/app}
+\end{itemize}
+
+\textbf{Run a command within the container}
+
+\begin{itemize}
+  \item \textit{Usage:} \texttt{RUN command}
+  \item \textit{Example:} \texttt{RUN npm install -g serve}
+\end{itemize}
+
+\textbf{Copy files into the container}
+
+\begin{itemize}
+  \item \textit{Usage:} \texttt{COPY <local files/directories> <container files/directories>}
+  \item \textit{Example:} \texttt{COPY ./display ./display}
+\end{itemize}
+
+\textbf{Specify a default command for the container}
+
+\begin{itemize}
+  \item \textit{Usage (shell format):} \texttt{CMD <default command>}
+  \item \textit{Example:} \texttt{CMD serve ./display}
+  \item \textit{Usage (exec format, recommended):} \texttt{CMD ["default command", "arguments"]}
+  \item \textit{Example:} \texttt{CMD ["node", "server.js"]}
+\end{itemize}
+
+	\subsection{Containers}
 	
+A container is a runnable instance of an image. You can create, start, stop, move, or delete a container using the Docker API or CLI. You can connect a container to one or more networks, attach storage to it, or even create a new image based on its current state.
+
+A container is defined by its image as well as any configuration options you provide to it when you create or start it. When a container is removed, any changes to its state that are not stored in persistent storage disappear.
+
+\textbf{Create an interactive terminal container with a name, an image, and a default command}
+
+\begin{itemize}
+  \item \textit{Usage:} \texttt{docker create -it --name=<name> <image> <command>}
+  \item \textit{Example:} \texttt{docker create -it --name=foo ubuntu bash}
+\end{itemize}
+
+\textbf{Start a container}
+
+\begin{itemize}
+  \item \textit{Usage:} \texttt{docker start <container name or id>}
+  \item \textit{Example:} \texttt{docker start foo}
+\end{itemize}
+
+\textbf{Attach to a container}
+
+\begin{itemize}
+  \item \textit{Usage:} \texttt{docker attach <container name or id>}
+  \item \textit{Example:} \texttt{docker attach foo}
+\end{itemize}
+
+\textbf{Remove a container}
+
+\begin{itemize}
+  \item \textit{Usage:} \texttt{docker rm <container name or id>}
+  \item \textit{Example:} \texttt{docker rm foo}
+  \item \textit{Example (force remove):} \texttt{docker rm foo -f}
+\end{itemize}
+
+\textbf{Run a new container}
+
+\begin{itemize}
+  \item \textit{Usage:} \texttt{docker run <image> <command>}
+  \item \textit{Example with options:} \texttt{docker run --name=bar -it ubuntu bash}
+\end{itemize}
+
+\textbf{List all running containers}
+
+\begin{itemize}
+  \item \texttt{docker container ls}
+\end{itemize}
+
+\textbf{List all containers, running or not}
+
+\begin{itemize}
+  \item \texttt{docker container ls -a}
+\end{itemize}
+
+	\subsection{Services}
+
+Services allow you to scale containers across multiple Docker daemons, which all work together as a \textit{swarm} with multiple \textit{managers} and \textit{workers}. Each member of a swarm is a Docker daemon, and all the daemons communicate using the Docker API.
+
+A service allows you to define the desired state, such as the number of replicas of the service that must be available at any given time. By default, the service is load-balanced across all worker nodes. To the consumer, the Docker service appears to be a single application.
+
 \end{document}\grid
