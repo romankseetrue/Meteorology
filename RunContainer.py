@@ -18,7 +18,7 @@ def run_container(image_name, container_name):
     client = docker.from_env()
     client.containers.run(image_name, name=container_name, detach=True, tty=True, stdin_open=True)
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     dockerfile_path = '.'
     image_name = 'roman.kushnirenk/meteorology'
     container_name = 'meteorology'

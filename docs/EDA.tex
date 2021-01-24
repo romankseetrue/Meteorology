@@ -69,4 +69,11 @@ In general, clusters of similar values suggest that subgroups exist in your data
 
 It’s good practice to repeat your analysis with and without the outliers. If they have minimal effect on the results, and you can’t figure out why they’re there, it’s reasonable to replace them with missing values and move on. However, if they have a substantial effect on your results, you shouldn’t drop them without justification. You’ll need to figure out what caused them and disclose that you removed them in your write-up.
 
+\textbf{Missing Values.} If you’ve encountered unusual values in your dataset, and simply want to move on to the rest of your analysis, you have two options:
+
+\begin{itemize}
+\item \textit{Drop the entire row with the strange values.} I don’t recommend this option as just because one measurement is invalid, doesn’t mean all the measurements are. Additionally, if you have low-quality data, by time that you’ve applied this approach to every variable you might find that you don’t have any data left!
+\item Instead, I recommend \textit{replacing the unusual values with missing values.}
+\end{itemize}
+
 \end{document}\grid
