@@ -76,4 +76,31 @@ It’s good practice to repeat your analysis with and without the outliers. If t
 \item Instead, I recommend \textit{replacing the unusual values with missing values.}
 \end{itemize}
 
+\section{Covariation}
+
+If variation describes the behavior \textit{within} a variable, covariation describes the behavior \textit{between} variables. Covariation is the tendency for the values of two or more variables to vary together in a related way. The best way to spot covariation is to visualize the relationship between two or more variables. How you do that should again depend on the type of variables involved.
+
+\textbf{A Categorical and Continuous Variable.} It’s common to want to explore the distribution of a continuous
+variable broken down by a categorical variable.
+
+Another alternative to display the distribution of a continuous variable broken down by a categorical variable is the boxplot. A \textit{boxplot} is a type of visual shorthand for a distribution of values that is popular among statisticians. Each boxplot consists of:
+
+\begin{itemize}
+\item A box that stretches from the 25th percentile of the distribution to the 75th percentile, a distance known as the interquartile range (IQR). In the middle of the box is a line that displays the median of the distribution. These three lines give you a sense of the spread of the distribution and whether or not the distribution is symmetric about the median or skewed to one side.
+\item Visual points that display observations that fall more than 1.5 times the IQR from either edge of the box. These outlying points are unusual, so they are plotted individually.
+\item A line (or whisker) that extends from each end of the box and goes to the farthest nonoutlier point in the distribution.
+\end{itemize}
+
+\textbf{Two Categorical Variables.} To visualize the covariation between categorical variables, you’ll need to count the number of observations for each combination.
+
+If the categorical variables are unordered, you might want to simultaneously reorder the rows and columns in order to more clearly reveal interesting patterns.
+
+A \textit{heatmap} is a graphical representation of data where the individual values contained in a matrix are represented as colors.
+
+\textbf{Two Continuous Variables.} You’ve already seen one great way to visualize the covariation between two continuous variables: draw a scatterplot. You can see covariation as a pattern in the points.
+
+Scatterplots become less useful as the size of your dataset grows, because points begin to overplot, and pile up into areas of uniform black.
+
+Another option is to bin one continuous variable so it acts like a categorical variable. Then you can use one of the techniques for visualizing the combination of a categorical and a continuous variable that you learned about.
+
 \end{document}\grid
